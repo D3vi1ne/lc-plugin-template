@@ -15,18 +15,19 @@ import {TreeNode} from "../common/treeNode.js";
  * @return {number}
  */
 var firstMissingPositive = function(nums) {
-    const sorted = nums.sort((a, b) => a - b);
-    var result = 1;
-    for (let i = 0; i < nums.length; i++) {
-        const n = nums[i];
-        if (n < result)
-            continue;
-        if (n === result)
-            result++;
-        if (n > result)
-            break;
+    const len = nums.length;
+    for (let i = 0; i < len; i++) {
+        while (nums[i] >= 1 && nums[i] <= len && nums[nums[i]-1] !== nums[i]) {
+            let temp = nums[nums[i]-1];
+            nums[nums[i]-1] = nums[i];
+            nums[i] = temp;
+        }
     }
-    return result;
+    for (let i = 0; i < len; i++) {
+        if (nums[i] != i + 1)
+            return i + 1;
+    }
+    return len + 1;
 };
 // @lc code=end
 
