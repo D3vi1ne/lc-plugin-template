@@ -16,16 +16,14 @@ import {TreeNode} from "../common/treeNode.js";
  */
 var rotate = function(matrix) {
     var n = matrix.length;
-    for (let i = 0; i < n; i++) {
-        for (let j = i; j < n - 2*i; j++) {
-            let row = i;
-            let col = j;
-            let walk_1 = row;
-            let walk_2 = col;
-            let record = matrix[walk_1][walk_2];
-            do {
-                walk_1 = 
-            } while (row != walk_1 && col != walk_2)
+    for (let row = 0; row < n - 1; row++) {
+        for (let col = row; col < n - 1 - row; col++) {
+            let coords = [[row, col], [col, n - 1 - row], [n - 1 - row, n - 1 - col], [n - 1 - col, row]]
+            let temp = matrix[coords[3][0]][coords[3][1]];
+            matrix[coords[3][0]][coords[3][1]] = matrix[coords[2][0]][coords[2][1]];
+            matrix[coords[2][0]][coords[2][1]] = matrix[coords[1][0]][coords[1][1]];
+            matrix[coords[1][0]][coords[1][1]] = matrix[coords[0][0]][coords[0][1]];
+            matrix[coords[0][0]][coords[0][1]] = temp;
         }
     }
 };
@@ -33,18 +31,9 @@ var rotate = function(matrix) {
 
 // your test code here
 
+rotate([[1,2,3],[4,5,6],[7,8,9]])
+// rotate([[1,2],[3,4]])
 
-0 0   -> 0   n
-0 1   -> 1   n
-0 n-1 -> n-1 n
-
-a,b -> b, n-1-a
-
-1 0 -> 0 1
-1 1 -> 1 1
-1 2 -> 2 1 
-
-a,b -> b, n-1-a
 
 /*
 // @lcpr case=start
