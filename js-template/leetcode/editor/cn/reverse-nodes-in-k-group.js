@@ -23,27 +23,26 @@ import {TreeNode} from "../common/treeNode.js";
  * @return {ListNode}
  */
 var reverseKGroup = function(head, k) {
-    var cache = [];
     var count = 0;
     var cur = head;
     while (cur != null && count < k) {
         count++;
-        cache.push(cur);
         cur = cur.next;
     }
     if (count < k)
         return head;
     
     //reverse k nodes
-    var start = cache.pop();
-    var walker = start;
-    while (cache.length > 0) {
-        let nextNode = cache.pop();
-        walker.next = nextNode;
-        walker = nextNode;
+    var pre = null;
+    cur = head;
+    for (count = 0; count < k; count++) {
+        let nextNode = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = nextNode;
     }
-    walker.next = reverseKGroup(cur, k);
-    return start;
+    head.next = reverseKGroup(cur, k);
+    return pre;
 };
 // @lc code=end
 
