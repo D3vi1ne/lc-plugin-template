@@ -23,39 +23,26 @@ import {TreeNode} from "../common/treeNode.js";
  * @return {boolean}
  */
 var isSymmetric = function(root) {
-    var left = collectLeft(root.left);
-    var right = collectRight(root.right);
-    if (left.length !== right.length)
-        return false;
-    for (let i = 0; i < left.length; i++) {
-        let leftNode = left[i];
-        let rightNode = right[i];
-        if ((leftNode != null && rightNode == null) ||
-            (leftNode == null && rightNode != null) ||
-            (leftNode != null && rightNode != null && leftNode.val !== rightNode.val))
-            return false;
-    }
-    return true;
+    return isMirror(root.left, root.right);
 };
 
 /**
- * 
- * @param {TreeNode} root 
- * @returns {TreeNode[]}
+ * @param {TreeNode} left 
+ * @param {TreeNode} right 
  */
-var collectLeft = function(root) {
-    if (!root) return [root];
-    let left = collectLeft(root.left);
-    let right = collectLeft(root.right);
-    return [root].concat(left).concat(right);
+var isMirror = function(left, right) {
+    if (left != null && right == null)
+        return false;
+    else if (left == null && right != null)
+        return false;
+    else if (left == null && right == null)
+        return true;
+    else if (left.val != right.val)
+        return false;
+    else
+        return isMirror(left.left, right.right) && isMirror(left.right, right.left);
 }
 
-var collectRight = function(root) {
-    if (!root) return [root];
-    let left = collectRight(root.left);
-    let right = collectRight(root.right);
-    return [root].concat(right).concat(left);
-}
 
 // @lc code=end
 
