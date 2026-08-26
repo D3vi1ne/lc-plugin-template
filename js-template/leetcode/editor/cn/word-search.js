@@ -22,29 +22,29 @@ var exist = function(board, word) {
     /**
      * @param {number} i 
      * @param {number} j 
-     * @param {string} word 
+     * @param {number} index 
      * @param {Set} cache
      */
-    const check = function(i, j, word, cache) {
-        if (word.length === 0)
+    const check = function(i, j, index, cache) {
+        if (index === word.length)
             return true;
         if (i < 0 || i >= m || j < 0 || j >= n)
             return false;
-        if (cache.has(i * m * 10 + j) || board[i][j] !== word[0])
+        if (cache.has(i * m * 10 + j) || board[i][j] !== word[index])
             return false;
-        let wordNext = word.slice(1);
+        index++;
         cache.add(i * m * 10 + j);
-        let result = check(i - 1, j, wordNext, cache)
-            || check(i + 1, j, wordNext, cache)
-            || check(i, j - 1, wordNext, cache)
-            || check(i, j + 1, wordNext, cache);
+        let result = check(i - 1, j, index, cache)
+            || check(i + 1, j, index, cache)
+            || check(i, j - 1, index, cache)
+            || check(i, j + 1, index, cache);
         cache.delete(i * m * 10 + j);
         return result;
     }
 
     for (let i = 0; i < m; i++) {
         for (let j = 0; j < n; j++) {
-            if (check(i, j, word, new Set()))
+            if (check(i, j, 0, new Set()))
                 return true;
         }
     }
