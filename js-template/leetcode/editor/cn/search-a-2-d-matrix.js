@@ -16,43 +16,31 @@ import {TreeNode} from "../common/treeNode.js";
  * @return {boolean}
  */
 var searchMatrix = function(matrix, target) {
+    var m = matrix.length;
+    var n = matrix[0].length;
+    var left = 0;
+    var right = m * n - 1;
 
-    /**
-     * @param {number} startM 
-     * @param {number} startN 
-     * @param {number} endM 
-     * @param {number} endN 
-     * @return {boolean}
-     */
-    const searchByIndex = function(startM, startN, endM, endN) {
-        if (startM > endM || startN > endN)
-            return false;
-        let min = matrix[startM][startN];
-        let max = matrix[endM][endN];
-        if (target > max || target < min)
-            return false;
-        if (target === max || target === min)
+    while (left < right) {
+        let mid = Math.floor((right + left) / 2);
+        let midVal = matrix[Math.floor(mid / n)][mid % n];
+        if (midVal === target)
             return true;
-        if (min === max)
-            return false;
-        let midM = Math.floor((startM + endM) / 2);
-        let midN = Math.floor((startN + endN) / 2);
-        return searchByIndex(startM, startN, midM, midN)
-            || searchByIndex(midM + 1, midN + 1, endM, endN)
-            || searchByIndex(midM + 1, startN, endM, midN + 1)
-            || searchByIndex(startM, midN + 1, midM, endN);
+        else if (midVal < target)
+            left = mid + 1;
+        else if (midVal > target)
+            right = mid - 1;
     }
-
-    return searchByIndex(0, 0, matrix.length - 1, matrix[0].length - 1);
+    return matrix[Math.floor(left / n)][left % n] === target;
 };
 // @lc code=end
 
 // your test code here
 
-// searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,50]], 5)
+searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,50]], 3)
 // searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 30)
 // searchMatrix([[1]], 0)
-searchMatrix([[1,2,7],[5,6,8]], 3)
+// searchMatrix([[1,2,7],[5,6,8]], 3)
 
 // 1  3  5  7
 // 10 11 16 20
