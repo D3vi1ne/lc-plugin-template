@@ -17,16 +17,17 @@ import {TreeNode} from "../common/treeNode.js";
 var dailyTemperatures = function(temperatures) {
     var answer = Array(temperatures.length).fill(0);
     var cache = [];
-    var index = [];
 
     for (let i = 0; i < temperatures.length; i++) {
-        while (cache.length > 0 && cache[cache.length - 1] < temperatures[i]) {
-            cache.pop();
-            let temp = index.pop();
-            answer[temp] = i - temp;
+        while (cache.length > 0) {
+            let temp = cache[cache.length - 1];
+            if (temperatures[temp] < temperatures[i]) {
+                cache.pop();
+                answer[temp] = i - temp;
+            } else
+                break;
         }
-        cache.push(temperatures[i]);
-        index.push(i);
+        cache.push(i);
     }
 
     return answer;
