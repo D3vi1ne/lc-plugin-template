@@ -40,19 +40,19 @@ import {TreeNode} from "../common/treeNode.js";
  * @return {number}
  */
 var maxProduct = function(nums) {
-    let minRecords = new Array(nums.length);
-    let maxRecords = new Array(nums.length);
-    for (let i = 0; i < nums.length; i++) {
-        if (nums[i] === 0) {
-            minRecords[i] = 0;
-            maxRecords[i] = 0;
-        } else {
-            minRecords[i] = Math.min((minRecords[i - 1] ?? 1) * nums[i], (maxRecords[i - 1] ?? 1) * nums[i], nums[i]);
-            maxRecords[i] = Math.max((minRecords[i - 1] ?? 1) * nums[i], (maxRecords[i - 1] ?? 1) * nums[i], nums[i]);
-        }
+    let minRecords = nums[0];
+    let maxRecords = nums[0];
+    let max = nums[0];
+    for (let i = 1; i < nums.length; i++) {
+        let lastMin = minRecords;
+        let lastMax = maxRecords;
+
+        minRecords = Math.min(lastMin * nums[i], lastMax * nums[i], nums[i]);
+        maxRecords = Math.max(lastMin * nums[i], lastMax * nums[i], nums[i]);
+        max = Math.max(maxRecords, max);
     }
     
-    return Math.max(...maxRecords);
+    return max;
 };
 // @lc code=end
 
