@@ -47,15 +47,24 @@ import {TreeNode} from "../common/treeNode.js";
  * @return {number}
  */
 var lengthOfLIS = function(nums) {
-    let records = Array(nums.length).fill(1);
+    let records = Array(nums.length);
     let max = 0;
     for (let i = 0; i < nums.length; i++) {
-        for (let j = 0; j < i; j++) {
-            if (nums[i] > nums[j]) {
-                records[i] = Math.max(records[i], records[j] + 1);
-            }
+        let left = 0, right = max;
+        while (left < right) {
+            let mid = Math.floor((left + right) / 2);
+            if (records[mid] < nums[i])
+                left = mid + 1;
+            else if (records[mid] > nums[i])
+                right = mid;
+            else
+                right = mid;
         }
-        max = Math.max(max, records[i]);
+
+        if (left === max)
+            max++;
+        
+        records[left] = nums[i];
     }
     return max;
 };
@@ -63,6 +72,8 @@ var lengthOfLIS = function(nums) {
 
 // your test code here
 
+// lengthOfLIS([10,9,2,5,3,7,101,18])
+lengthOfLIS([0,1,0,3,2,3])
 
 
 
