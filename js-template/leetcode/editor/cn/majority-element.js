@@ -39,20 +39,25 @@ import {TreeNode} from "../common/treeNode.js";
  * @return {number}
  */
 var majorityElement = function(nums) {
-    let records = new Map();
-    let target = nums.length / 2;
-    for (let n of nums) {
-        records.set(n, (records.get(n) | 0) + 1);
-        if (records.get(n) > target)
-            return n;
+    let res = nums[0];
+    let signal = 0;
+    for (let i = 0; i < nums.length; i++) {
+        if (res === nums[i])
+            signal++;
+        else
+            signal--;
+
+        if (signal === 0) {
+            res = nums[i+1];
+        }
     }
-    return 0;
+    return res;
 };
 // @lc code=end
 
 // your test code here
 
-
+majorityElement([6,5,5])
 
 /*
 // @lcpr case=start
@@ -61,6 +66,10 @@ var majorityElement = function(nums) {
 
 // @lcpr case=start
 // [2,2,1,1,1,2,2]\n
+// @lcpr case=end
+
+// @lcpr case=start
+// [6,5,5]\n
 // @lcpr case=end
 
  */
