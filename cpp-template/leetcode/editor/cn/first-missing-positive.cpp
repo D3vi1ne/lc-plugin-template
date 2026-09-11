@@ -17,19 +17,31 @@ using namespace std;
 class Solution {
 public:
     int firstMissingPositive(vector<int>& nums) {
-        for (int i = 0; i < nums.size(); ++i) {
-            while (nums[i] > 0 &&nums[i] <= nums.size() && nums[nums[i] - 1] != nums[i])
+        int n = nums.size();
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] == i + 1 || nums[i] <= 0)
+                continue;
+            if (nums[i] > n) {
+                nums[i] = 0;
+                continue;
+            }
+            
+            int value = nums[i];
+            nums[i] = 0;
+            while (value <= n && value > 0)
             {
-                int temp = nums[i];
-                nums[i] = nums[temp - 1];
-                nums[temp - 1] = temp;
+                int temp = nums[value - 1];
+                if (temp == value)
+                    break;
+                nums[value - 1] = value;
+                value = temp;
             }
         }
-        for (int i = 0; i < nums.size(); ++i) {
-            if (nums[i] != i + 1)
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] <= 0)
                 return i + 1;
         }
-        return nums.size() + 1;
+        return n + 1;
     }
 };
 // @lc code=end
@@ -37,8 +49,7 @@ public:
 int main() {
     Solution solution;
     // your test code here
-    // vector<int> nums = {2147483647,2147483646,2147483645,3,2,1,-1,0,-2147483648};
-    vector<int> nums = {7,8,9,11,12};
+    vector<int> nums = {2147483647,2147483646,2147483645,3,2,1,-1,0,-2147483648};
     solution.firstMissingPositive(nums);
 }
 
