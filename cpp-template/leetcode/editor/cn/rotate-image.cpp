@@ -19,19 +19,15 @@ public:
     void rotate(vector<vector<int>>& matrix) {
         int n = matrix.size();
         int limit = n / 2;
-        for (int i = 0; i <= limit; ++i) {
-            for (int j = i; j < n - 1 - i; ++j) {
-                int temp = 0;
-                int record = matrix[j][n-1-i];
-                matrix[j][n-1-i]=matrix[i][j];
-                temp = matrix[n-1-i][n-1-j];
-                matrix[n-1-i][n-1-j] = record;
-                record = temp;
-                temp = matrix[n-1-j][i];
-                matrix[n-1-j][i] = record;
-                record = temp;
-                matrix[i][j] = record;
+        for (int i = 0; i < n; ++i) {
+            for (int j = i; j < n; ++j) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
             }
+        }
+        for (auto &&item : matrix) {
+            reverse(item.begin(), item.end());
         }
     }
 };
